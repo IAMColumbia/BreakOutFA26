@@ -1,0 +1,15 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; background: #161b26; color: #f4f6fa; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 848px; margin: 0 auto; padding: 24px; }
+h1 { margin: 0 0 8px; font-size: 28px; }
+p { line-height: 1.5; }
+header p, .hint { color: #c6ccda; font-size: 14px; }
+kbd { font-family: inherit; }
+#canvasHolder { width: 100%; aspect-ratio: 5 / 3; background: #6495ed; }
+canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+canvas:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+.loading { padding: 40px; text-align: center; }
+#blazor-error-ui { display: none; padding: 16px; background: #702528; position: fixed; bottom: 0; width: 100%; }
+a { color: inherit; }
+@media (max-width: 600px) { main { padding: 16px; } }

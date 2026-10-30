@@ -33,6 +33,17 @@ namespace BreakoutStep1
             this.UpdateBlockState();
         }
 
+        /// <summary>
+        /// Puts the block back to a fresh unhit block, used when the wall is rebuilt.
+        /// The hit count has to go back to zero too, UpdateBlockState reads it every
+        /// update so just setting BlockState to Normal gets overwritten right away.
+        /// </summary>
+        public virtual void Reset()
+        {
+            this.hitCount = 0;
+            this.UpdateBlockState();
+        }
+
         public virtual void UpdateBlockState()
         {
             switch (this.hitCount)

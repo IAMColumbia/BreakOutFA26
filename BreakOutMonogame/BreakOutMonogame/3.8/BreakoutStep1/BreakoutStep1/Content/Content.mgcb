@@ -133,6 +133,13 @@
 /processorParam:TextureFormat=Color
 /build:block_yellow.png
 
+#begin FunFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:FunFont.spritefont
+
 #begin paddleBig.png
 /importer:TextureImporter
 /processor:TextureProcessor

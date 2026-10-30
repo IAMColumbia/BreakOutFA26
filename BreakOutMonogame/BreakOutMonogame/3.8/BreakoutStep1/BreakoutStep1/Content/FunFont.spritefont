@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Font used for the pop up text that floats up the middle of the screen.
+Comic Sans MS ships with Windows so the pipeline can build it without
+dropping a .ttf in the Content folder.
+-->
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+  <Asset Type="Graphics:FontDescription">
+
+    <FontName>Comic Sans MS</FontName>
+
+    <!-- Big enough to read from the middle of the screen while the ball is moving -->
+    <Size>34</Size>
+
+    <Spacing>1</Spacing>
+
+    <UseKerning>true</UseKerning>
+
+    <Style>Bold</Style>
+
+    <!-- Anything we didn't build a glyph for draws as * instead of throwing -->
+    <DefaultCharacter>*</DefaultCharacter>
+
+    <CharacterRegions>
+      <CharacterRegion>
+        <Start>&#32;</Start>
+        <End>&#126;</End>
+      </CharacterRegion>
+    </CharacterRegions>
+  </Asset>
+</XnaContent>

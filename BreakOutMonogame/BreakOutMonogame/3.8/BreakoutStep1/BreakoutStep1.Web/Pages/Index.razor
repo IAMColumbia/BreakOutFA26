@@ -1,0 +1,15 @@
+@inject IJSRuntime JsRuntime
+@implements IDisposable
+
+<PageTitle>Breakout</PageTitle>
+
+<main>
+    <header>
+        <h1>Breakout</h1>
+        <p>Move with <kbd>←</kbd> <kbd>→</kbd> or your mouse. Launch with <kbd>↑</kbd> or a click.</p>
+    </header>
+    <div id="canvasHolder">
+        <canvas id="theCanvas" width="800" height="480" tabindex="0" aria-label="Breakout game. Left and right arrows move the paddle. Up arrow launches the ball."></canvas>
+    </div>
+    <p class="hint">Click the game to focus. Break each block twice. You have three lives.</p>
+</main>

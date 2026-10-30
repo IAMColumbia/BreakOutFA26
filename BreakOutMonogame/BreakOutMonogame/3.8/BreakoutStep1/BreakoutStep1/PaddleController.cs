@@ -35,14 +35,32 @@ namespace BreakoutStep1
             {
                 this.Direction = new Vector2(1, 0);
             }
-            //TODO add mouse controll?
 
-            //Up launches ball
-            if (input.KeyboardState.WasKeyPressed(Keys.Up))
+            //Mouse control, steers the same way the arrow keys do.
+            //This uses how far the mouse moved and not where it is, so the paddle keeps
+            //its own Speed instead of teleporting to the cursor. Checked after the keys
+            //so the mouse wins if someone is somehow using both at once.
+            float mouseMovedX = input.MouseState.X - input.PreviousMouseState.X;
+            if (mouseMovedX != 0)
+            {
+                this.Direction = new Vector2(Math.Sign(mouseMovedX), 0);
+            }
+
+            //Up or left click launches ball
+            if (input.KeyboardState.WasKeyPressed(Keys.Up) || WasLeftClick())
             {
                 if (ball.State == BallState.OnPaddleStart) //Only Launch Ball is it's on paddle
                     this.ball.LaunchBall(gametime);
             }
+        }
+
+        /// <summary>
+        /// True on the update the left button goes down, so holding it only launches once
+        /// </summary>
+        private bool WasLeftClick()
+        {
+            return input.MouseState.LeftButton == ButtonState.Pressed
+                && input.PreviousMouseState.LeftButton == ButtonState.Released;
         }
     }
 }

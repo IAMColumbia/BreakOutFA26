@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLibrary.Sprite;
-using MonoGameLibrary.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,34 +9,39 @@ using System.Threading.Tasks;
 
 namespace BreakoutStep1
 {
+    // what the ball is currently doing.
     public enum BallState { OnPaddleStart, Playing }
 
     public class Ball : DrawableSprite
     {
         public BallState State { get; private set; }
 
-        GameConsole console;
+        //Launch settings, these used to be magic numbers sitting inside LaunchBall
+        const float launchSpeed = 260;      //pixels per second, Direction is normalized so this is the real speed
+        const float launchLean = 0.6f;      //how far off straight up a launch can lean, in X per 1 of Y
+
+        //Service Dependencies
+        IScoreManager score;
+        IFloatingTextManager floatingText;
+
+        static readonly Random random = new Random();   //shared, every launch leans a different way
 
         public Ball(Game game)
             : base(game)
         {
             this.State = BallState.OnPaddleStart;
-            
-            //Lazy load GameConsole
-            console = (GameConsole)this.Game.Services.GetService(typeof(IGameConsole));
-            if (console == null) //ohh no no console let's add a new one
-            {
-                console = new GameConsole(this.Game);
-                this.Game.Components.Add(console);  //add a new game console to Game
-            }
-#if DEBUG
-            this.ShowMarkers = true;
-#endif
+
+            //Lazy load the services, same idea as the old GameConsole lookup but the
+            //managers hold the lazy load so this is one line each
+            score = ScoreManager.GetOrAddService(this.Game);
+            floatingText = FloatingTextManager.GetOrAddService(this.Game);
         }
 
         public void SetInitialLocation()
         {
-            this.Location = new Vector2(200, 300); //Hard coded position TODO fix this
+                Location = new Vector2(
+                    Game.GraphicsDevice.Viewport.Width / 2f,
+                    Game.GraphicsDevice.Viewport.Height / 2f);
         }
 
         /// <summary>
@@ -46,10 +50,16 @@ namespace BreakoutStep1
         /// <param name="gameTime"></param>
         public void LaunchBall(GameTime gameTime)
         {
-            this.Speed = 190; //hard coded speed TODO fix this
-            this.Direction = new Vector2(1, -1); //hard coded launch direction TODO fix this
+            this.Speed = launchSpeed;
+
+            //Lean the launch left or right a little so the ball doesn't take the same path
+            //every time. Normalizing keeps Speed honest, a raw (1,-1) is 1.41 units long so
+            //the ball used to travel 40% faster than Speed said it would.
+            float lean = (((float)random.NextDouble() * 2) - 1) * launchLean;
+            this.Direction = Vector2.Normalize(new Vector2(lean, -1));
+
             this.State = BallState.Playing;
-            this.console.GameConsoleWrite("Ball Launched " + gameTime.TotalGameTime.ToString());
+            this.floatingText.Show("GO!");
         }
 
         protected override void LoadContent()
@@ -59,11 +69,11 @@ namespace BreakoutStep1
             base.LoadContent();
         }
 
-        private void resetBall(GameTime gameTime)
+        private void resetBall()
         {
             this.Speed = 0;
             this.State = BallState.OnPaddleStart;
-            this.console.GameConsoleWrite("Ball Reset " + gameTime.TotalGameTime.ToString());
+            //Back on the paddle, Paddle parks it there on its next update
         }
 
         public override void Update(GameTime gameTime)
@@ -96,10 +106,11 @@ namespace BreakoutStep1
             //bottom Miss
             if (this.Location.Y + this.spriteTexture.Height > this.Game.GraphicsDevice.Viewport.Height)
             {
-                //Should be miss and lose life
-                //TODO Lose life here
-                this.Direction.Y *= -1;
-                console.GameConsoleWrite("Should lose life here!!!");
+                //The floor is not a wall, reflecting here gives the ball a full width
+                //safety net and the paddle stops mattering at all
+                this.score.LoseLife();
+                this.floatingText.Show("MISS!", Color.OrangeRed);
+                this.resetBall();
             }
 
             //Top
