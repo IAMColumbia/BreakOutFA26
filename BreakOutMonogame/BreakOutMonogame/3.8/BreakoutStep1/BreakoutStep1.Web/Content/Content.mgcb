@@ -1,0 +1,23 @@
+/outputDir:bin/BlazorGL
+/intermediateDir:obj/BlazorGL
+/platform:BlazorGL
+/profile:Reach
+/compress:False
+
+# Build the original sprites into browser-compatible content.
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:TextureFormat=Color
+/build:../../BreakoutStep1/Content/ballSmall.png;ballSmall
+/build:../../BreakoutStep1/Content/paddleSmall.png;paddleSmall
+/build:../../BreakoutStep1/Content/block_red.png;block_red
+/build:../../BreakoutStep1/Content/block_yellow.png;block_yellow
+/build:../../BreakoutStep1/Content/block_blue.png;block_blue
+/build:../../BreakoutStep1/Content/block_greenWaveSmall.png;block_greenWaveSmall
+/build:../../BreakoutStep1/Content/block_bubble.png;block_bubble
+/build:../../MonoGameLibrary/Content/SpriteMarker.png;SpriteMarker
+
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Color
+/build:../../BreakoutStep1/Content/FunFont.spritefont;FunFont

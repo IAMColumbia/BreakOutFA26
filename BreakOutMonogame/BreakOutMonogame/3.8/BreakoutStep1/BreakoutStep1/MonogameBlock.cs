@@ -31,6 +31,19 @@ namespace BreakoutStep1
             HitTextureName = "block_bubble";
         }
 
+        /// <summary>
+        /// Block with its own textures, lets BlockWall give each row a different color
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="normalTextureName">Texture for a block that hasn't been hit</param>
+        /// <param name="hitTextureName">Texture for a block that has been hit once</param>
+        public MonogameBlock(Game game, string normalTextureName, string hitTextureName)
+        : this(game)    //chain the default constructor then swap the texture names
+        {
+            NormalTextureName = normalTextureName;
+            HitTextureName = hitTextureName;
+        }
+
         protected virtual void updateBlockTexture()
         {
 
@@ -77,6 +90,15 @@ namespace BreakoutStep1
         {
             this.block.Hit();
 
+        }
+
+        /// <summary>
+        /// Puts the block back to new and shows it again, called by BlockWall.ResetWall
+        /// </summary>
+        public void Reset()
+        {
+            this.block.Reset();
+            updateBlockTexture();   //back to the normal texture and Visible again
         }
     }
 }
